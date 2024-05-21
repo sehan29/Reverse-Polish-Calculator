@@ -1,3 +1,0 @@
-E:/c programs/project/Reverse-Polish-Calculator/Application/cmake-build-debug/CMakeFiles/Application.dir
-E:/c programs/project/Reverse-Polish-Calculator/Application/cmake-build-debug/CMakeFiles/edit_cache.dir
-E:/c programs/project/Reverse-Polish-Calculator/Application/cmake-build-debug/CMakeFiles/rebuild_cache.dir
