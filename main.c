@@ -19,6 +19,8 @@ void Main_Selection();
 void Exit_Message();
 void Development_Team();
 int evaluatePostfix(char *expr,RPNRecord *record);
+void InfixToPostfix();
+void infixToPostfixConversion(char* infix, char* postfix);
 
 
 char simplification[50];
@@ -52,11 +54,8 @@ void Main_Selection()
         result = scanf("%d", &select_value);
     }
 
-
     system("cls");
     Header();
-
- 
 
    switch (select_value)
    {
@@ -75,13 +74,17 @@ void Main_Selection()
         break;
 
     case 4:
+        //system("cls");
+        InfixToPostfix();
+        break;
+
+    case 5:
         system("cls");
         Exit_Message();
         exit(0); 
         break;
-    
-    default:
 
+    default:
         system("cls");
         printf("\n\n\t\t\tPlease Enter The Valid Number\n\n");
         Exit_Message();
@@ -104,7 +107,9 @@ void Main_Body_content()
     printf("1. Add New Reverse Polish Notation.\n");
     printf("2. Display Calculated Notation.\n");
     printf("3. About The Development Team.\n");
-    printf("4. Exit.\n\n");
+    printf("4. Infix To Postfix\n");
+    printf("5. Exit.\n");
+    
 
 }
 
@@ -122,10 +127,11 @@ void Insert_Reverse_Polish_Notation()
     char back_btn;
     RPNRecord record;
     char Expression[100];
+    printf("\t -- Enter Only Digits and ('/', '*', '-', '+') Operators in Here --\n\n");
     printf("Enter Revese Polish Notation - ");
     while ((c = getchar()) != '\n' && c != EOF) { }
     fgets(Expression,100,stdin);
-    Expression[strcspn(Expression, "\n")] = 0;
+    //Expression[strcspn(Expression, "\n")] = 0;
    // printf("%s\n",Expression);
 
     int result = evaluatePostfix(Expression,&record);
@@ -331,6 +337,112 @@ void Development_Team()
     }
     else
     {
+        system("cls");
+        Exit_Message();
+        exit(0);
+    }
+}
+
+int precedence(char op) {
+    switch (op) {
+    case '+':
+    case '-':
+        return 1;
+    case '*':
+    case '/':
+        return 2;
+    default:
+        return 0;
+    }
+}
+
+void infixToPostfixConversion(char* infix, char* postfix) {
+    Stack s;
+    CreateStack(&s);
+    int j = 0;
+
+    for (int i = 0; infix[i] != '\0'; i++) {
+        if (isdigit(infix[i])) {
+            while (isdigit(infix[i])) {
+                postfix[j++] = infix[i++];
+            }
+            postfix[j++] = ' ';
+            i--;
+        } else if (infix[i] == '(') {
+            Push(infix[i], &s);
+        } else if (infix[i] == ')') {
+            while (!IsStackEmpty(&s) && s.entry[s.top] != '(') {
+                postfix[j++] = Pop(&s);
+                postfix[j++] = ' ';
+            }
+            Pop(&s); // Remove '(' from stack
+        } else {
+            while (!IsStackEmpty(&s) && precedence(infix[i]) <= precedence(s.entry[s.top])) {
+                postfix[j++] = Pop(&s);
+                postfix[j++] = ' ';
+            }
+            Push(infix[i], &s);
+        }
+    }
+
+    while (!IsStackEmpty(&s)) {
+        postfix[j++] = Pop(&s);
+        postfix[j++] = ' ';
+    }
+
+    postfix[j - 1] = '\0'; // Remove the last space and terminate the string
+}
+
+void InfixToPostfix() {
+    int c;
+    char back_btn;
+    char infix[100];
+    char postfix[100];
+    RPNRecord record;
+
+    printf("\t -- Enter Only Digits and ('/', '*', '-', '+') Operators in Here --\n\n");
+
+    printf("Enter Infix Expression - ");
+    while ((c = getchar()) != '\n' && c != EOF) { }
+    fgets(infix, 100, stdin);
+    infix[strcspn(infix, "\n")] = 0; // Remove newline character
+
+    infixToPostfixConversion(infix, postfix);
+    printf("Postfix Expression: %s\n", postfix);
+
+    int result = evaluatePostfix(postfix, &record);
+
+    printf("--------------------------------------------------------------------------\n");
+    printf("Result of Infix Expression = %d\n", result);
+    printf("--------------------------------------------------------------------------\n");
+
+    FILE *file = fopen("Reverse_Polish_Notation.txt", "a");  // Open the file in append mode
+    if (file != NULL) {
+        int notationWidth = 40;
+        int notationLength = strlen(record.notation);
+        int spaceCount = notationWidth - notationLength;
+
+        // Print notation and result, with notation padded to be 60 characters long
+        fprintf(file, "%s", record.notation);
+        for (int i = 0; i < spaceCount; i++) {
+            fputc(' ', file);  // Add spaces to pad the notation
+        }
+        fprintf(file, "%s\n", record.result);
+
+        fclose(file); 
+    } else {
+        printf("Failed to open file for writing.\n");
+    }
+
+    printf("\n<-- If You Want To Go Main Menu (Y/N) : ");
+    scanf("%s", &back_btn);
+
+    if (back_btn == 'Y' || back_btn == 'y') {
+        system("cls");
+        Header();
+        Main_Body_content(); 
+        Main_Selection();
+    } else {
         system("cls");
         Exit_Message();
         exit(0);
