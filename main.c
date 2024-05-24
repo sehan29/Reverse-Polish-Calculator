@@ -4,10 +4,14 @@
 #include "stack_header.h"
 
 
+
+// ayesh
 typedef struct {
     char notation[100];  // To store the Reverse Polish notation
     char result[50];     // To store the result or error message
 } RPNRecord;
+// ayesh end
+
 
 
 void Header();
@@ -36,6 +40,7 @@ int main(){
 
 
 
+// Shehan
 void Main_Selection()
 {
     int select_value;
@@ -49,11 +54,10 @@ void Main_Selection()
     while (result != 1) {
         // Clear the input buffer
         while (getchar() != '\n');
-
         printf("Invalid input. Please enter a number: ");
         result = scanf("%d", &select_value);
-    }
 
+    }
     system("cls");
     Header();
 
@@ -93,6 +97,7 @@ void Main_Selection()
    }
    
 }
+// Shehan end
 
 
 void Header()
@@ -113,7 +118,6 @@ void Main_Body_content()
 
 }
 
-
 void Footer()
 {
     printf("-------------------------------------------------------------------------------------\n");
@@ -121,6 +125,8 @@ void Footer()
     printf("-------------------------------------------------------------------------------------\n");
 }
 
+
+// Ayeshhhhhhhhhh
 void Insert_Reverse_Polish_Notation()
 {
     int c;
@@ -133,7 +139,6 @@ void Insert_Reverse_Polish_Notation()
     fgets(Expression,100,stdin);
     //Expression[strcspn(Expression, "\n")] = 0;
    // printf("%s\n",Expression);
-
     int result = evaluatePostfix(Expression,&record);
 
     printf("--------------------------------------------------------------------------\n");
@@ -177,8 +182,12 @@ void Insert_Reverse_Polish_Notation()
         exit(0);
     }
 }
+// Ayeshhhhhhhhhh end
 
 
+
+
+// Dilup
 int evaluatePostfix(char *expr,RPNRecord *record) {
 
     Stack s;
@@ -266,6 +275,11 @@ int evaluatePostfix(char *expr,RPNRecord *record) {
     return result;
 }
 
+// Dilup end
+
+
+
+
 void Exit_Message()
 {
     printf("\n-------------------------------------------------------------------\n");
@@ -274,6 +288,8 @@ void Exit_Message()
 }
 
 
+
+//Chamod Piliyandala
 void DisplaySavedNotations() {
 
     char back_btn;
@@ -313,12 +329,16 @@ void DisplaySavedNotations() {
     }
 }
 
+//Chamod Piliyandala end
 
+
+
+//malaka
 void Development_Team()
 {
     char back_btn;
 
-    printf("2021T01205 - G.S.H GAMAGE\n");
+    printf("2021T0198 - G.S.H GAMAGE\n");
     printf("2021T01205 - G.S.H GAMAGE\n");
     printf("2021T01205 - G.S.H GAMAGE\n");
     printf("2021T01205 - G.S.H GAMAGE\n");
@@ -342,6 +362,9 @@ void Development_Team()
         exit(0);
     }
 }
+//malaka end
+
+
 
 int precedence(char op) {
     switch (op) {
@@ -356,6 +379,8 @@ int precedence(char op) {
     }
 }
 
+
+// Malaka
 void infixToPostfixConversion(char* infix, char* postfix) {
     Stack s;
     CreateStack(&s);
@@ -393,6 +418,13 @@ void infixToPostfixConversion(char* infix, char* postfix) {
     postfix[j - 1] = '\0'; // Remove the last space and terminate the string
 }
 
+// Malaka end
+
+
+
+
+
+// Ravidu
 void InfixToPostfix() {
     int c;
     char back_btn;
@@ -448,3 +480,5 @@ void InfixToPostfix() {
         exit(0);
     }
 }
+
+// Ravidu end
